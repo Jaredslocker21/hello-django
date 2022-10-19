@@ -32,7 +32,7 @@ DEBUG = development
 if development:
     ALLOWED_HOSTS = ['localhost']
 else:
-    ALLOWED_HOSTS = ['jaredslocker-django-todo.herokuapp.com']    
+    ALLOWED_HOSTS = [os.environ.get('HEROKU_HOSTNAME')]
 
 
 # Application definition
@@ -91,10 +91,8 @@ if development:
     }
 else:
     DATABASES = {
-        'default': dj_database_url.parse(
-            'postgres://mpaodrsjqgqxlz:0a87da7bbb5bbbfc01fd1a4b17d392ae9aace2837b3829429c767bf6bb96b976@ec2-63-32-248-14.eu-west-1.compute.amazonaws.com:5432/dba0foitjg41hr')
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
