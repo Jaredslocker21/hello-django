@@ -14,6 +14,8 @@ from pathlib import Path
 import os
 import dj_database_url
 
+development = ('DEVELOPMENT', False)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -22,12 +24,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-t*db0)u^mb2piqc_b*!_38(=+$64r)j_u=f%k98$r%z!lnxrt*'
+SECRET_KEY = ['SECRET_KEY', 'r)317wcyea)8ib3a%7+r+a!7f-0m8(=zg3t2##o&nct4o*o9)u']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = development
 
-ALLOWED_HOSTS = ['jaredslocker-django-todo.herokuapp.com']
+if development:
+    ALLOWED_HOSTS = ['localhost']
+else:
+    ALLOWED_HOSTS = ['HEROKU_HOSTNAME']    
 
 
 # Application definition
@@ -77,17 +82,18 @@ WSGI_APPLICATION = 'django_todo.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3'8
-#        'NAME': BASE_DIR / 'db.sqlite3',
-#    }
-# }
-
-DATABASES = {
-    'default': dj_database_url.parse(
-        'postgres://mpaodrsjqgqxlz:0a87da7bbb5bbbfc01fd1a4b17d392ae9aace2837b3829429c767bf6bb96b976@ec2-63-32-248-14.eu-west-1.compute.amazonaws.com:5432/dba0foitjg41hr')
-}
+if development:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+else:
+    DATABASES = {
+        'default': dj_database_url.parse(
+            'postgres://mpaodrsjqgqxlz:0a87da7bbb5bbbfc01fd1a4b17d392ae9aace2837b3829429c767bf6bb96b976@ec2-63-32-248-14.eu-west-1.compute.amazonaws.com:5432/dba0foitjg41hr')
+    }
 
 
 # Password validation
