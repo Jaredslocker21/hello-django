@@ -10,29 +10,21 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import dj_database_url
 import os
-
-development = os.environ.get('DEVELOPMENT', False)
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+import dj_database_url
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get(
-    'SECRET_KEY', '')
-
+if os.path.isfile("env.py"):
+    import env  # noqa
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = development
 
-if development:
-    ALLOWED_HOSTS = ['localhost']
+DEBUG = 'DEVELOPMENT' in os.environ
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
+if DEBUG == 'False':
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 else:
-    ALLOWED_HOSTS = [os.environ.get('HEROKU_HOSTNAME')]
+    BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
